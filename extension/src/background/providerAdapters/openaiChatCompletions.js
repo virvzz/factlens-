@@ -35,6 +35,19 @@ export function buildRequest(cfg, prompts) {
 export function parseResponse(json, responsePath) {
   const viaPath = getByPath(json, responsePath || DEFAULT_RESPONSE_PATH);
   if (typeof viaPath === "string" && viaPath) return viaPath;
+  // Reasoning-модели (DeepSeek и т.п.): весь лимит токенов ушёл на
+  // размышления, content пустой — подсказываем причину явно.
+  const choice = json && Array.isArray(json.choices) ? json.choices[0] : null;
+  const message = choice && choice.message;
+  if (
+    message &&
+    !message.content &&
+    (message.reasoning_content || (choice && choice.finish_reason === "length"))
+  ) {
+    throw new Error(
+      "модель потратила лимит токенов на размышления (reasoning) и не вернула ответ — увеличьте Max tokens (например, до 4096) или отключите thinking через «Дополнительные поля тела запроса»"
+    );
+  }
   throw new Error(
     `не найден текст по пути "${responsePath || DEFAULT_RESPONSE_PATH}"`
   );

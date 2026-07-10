@@ -88,6 +88,22 @@ test("OpenAI-compatible: парсер ответа choices[0].message.content", 
   assert.throws(() => openai.parseResponse({ choices: [] }));
 });
 
+test("OpenAI-compatible: пустой content у reasoning-модели — понятная ошибка", () => {
+  const reasoningReply = {
+    choices: [
+      {
+        message: { content: "", reasoning_content: "долгие размышления..." },
+        finish_reason: "length",
+      },
+    ],
+  };
+  assert.throws(() => openai.parseResponse(reasoningReply), /Max tokens|reasoning/);
+  const truncated = {
+    choices: [{ message: { content: null }, finish_reason: "length" }],
+  };
+  assert.throws(() => openai.parseResponse(truncated), /Max tokens|reasoning/);
+});
+
 test("DeepSeek: OpenAI-формат + advanced body options", () => {
   const cfg = openaiCfg({
     baseUrl: "https://api.deepseek.com",
