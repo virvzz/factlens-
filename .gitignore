@@ -2,3 +2,4 @@ node_modules/
 dist/
 web-ext-artifacts/
 .claude/
+factlens-settings*.json
