@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>FactLens</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"></span>
+      <span class="title">FactLens</span>
+    </div>
+    <div>
+      <button id="btnHelp" class="link-btn" type="button">Справка</button>
+      <button id="btnSettings" class="link-btn" type="button">Настройки</button>
+    </div>
+  </header>
+
+  <div class="meta">
+    <div id="providerLine" class="meta-line">Провайдер: —</div>
+    <div class="meta-line">
+      Статус: <span id="statusText">Ожидание</span>
+      <span id="spinner" class="spinner hidden" aria-hidden="true"></span>
+    </div>
+  </div>
+
+  <div id="setupHint" class="hint hidden">
+    Расширение не настроено. Откройте настройки, выберите провайдера и
+    сохраните API key.
+  </div>
+
+  <section class="actions">
+    <button id="btnCheckSelected" class="primary" type="button">
+      Проверить выделенный текст
+    </button>
+    <button id="btnCheckVideo" class="primary video" type="button">
+      🎬 Live-проверка видео (субтитры)
+    </button>
+    <details class="paste-block">
+      <summary>Вставить текст вручную</summary>
+      <textarea
+        id="pasteText"
+        rows="5"
+        placeholder="Вставьте текст для проверки…"
+      ></textarea>
+      <button id="btnAnalyze" class="primary" type="button">Анализировать</button>
+    </details>
+  </section>
+
+  <div id="errorBox" class="error hidden"></div>
+  <div id="noticeBox" class="notice hidden"></div>
+
+  <section id="resultSection" class="result hidden">
+    <div class="result-header">
+      <span id="resultTitle">Результат</span>
+      <button id="btnCopy" class="link-btn" type="button">Копировать JSON</button>
+    </div>
+    <div id="claimsList" class="claims"></div>
+  </section>
+
+  <footer class="disclaimer">
+    Автоматический фактчекинг может ошибаться. Не используйте результат как
+    окончательный источник истины.
+  </footer>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

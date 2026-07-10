@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>FactLens</title>
+  <link rel="stylesheet" href="sidebar.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"></span>
+      <span class="title">FactLens</span>
+    </div>
+    <div>
+      <button id="btnHelp" class="link-btn" type="button">Справка</button>
+      <button id="btnSettings" class="link-btn" type="button">Настройки</button>
+    </div>
+  </header>
+
+  <div id="providerLine" class="meta">Провайдер: —</div>
+
+  <section>
+    <h2>Live-сессия (активная вкладка)</h2>
+    <div id="liveBox" class="box">
+      <p class="muted">Нет активной live-сессии. Запустите её через popup →
+        «🎬 Live-проверка видео».</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Последняя проверка</h2>
+    <div id="lastBox" class="box">
+      <p class="muted">Пока ничего не проверялось.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>История <span id="historyState" class="muted"></span></h2>
+    <div id="historyBox" class="box">
+      <p class="muted">История выключена.</p>
+    </div>
+  </section>
+
+  <footer class="disclaimer">
+    Автоматический фактчекинг может ошибаться. Не используйте результат как
+    окончательный источник истины.
+  </footer>
+
+  <script type="module" src="sidebar.js"></script>
+</body>
+</html>

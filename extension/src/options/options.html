@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>FactLens — настройки</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <main class="page">
+    <h1>FactLens — настройки
+      <a class="help-link" href="../help/help.html" target="_blank">Справка: как всё подключить →</a>
+    </h1>
+
+    <div class="warning">
+      <p>
+        <strong>Приватность:</strong> текст, который вы проверяете, отправляется
+        только на выбранный вами endpoint. Расширение не использует аналитику,
+        трекеры и скрытые серверы. История проверок не сохраняется.
+      </p>
+      <p>
+        Настройки (включая API key) хранятся в
+        <code>browser.storage.local</code> — это не полноценный менеджер
+        секретов: другие расширения его не видят, но данные лежат на диске в
+        профиле Firefox без шифрования.
+      </p>
+      <p>
+        Автоматический фактчекинг может ошибаться. Не используйте результат как
+        окончательный источник истины.
+      </p>
+    </div>
+
+    <!-- Провайдер -->
+    <section>
+      <h2>Провайдер</h2>
+      <label>
+        Provider preset
+        <select id="presetSelect"></select>
+      </label>
+      <div class="row">
+        <label>
+          Base URL
+          <input id="baseUrl" type="url" placeholder="https://api.example.com" />
+        </label>
+        <label>
+          API path
+          <input id="apiPath" type="text" placeholder="/v1/chat/completions" />
+        </label>
+      </div>
+      <div id="originPreview" class="origin-preview"></div>
+      <div class="row">
+        <label>
+          Request format
+          <select id="requestFormat">
+            <option value="anthropic">Anthropic Messages API</option>
+            <option value="openai">OpenAI Chat Completions</option>
+            <option value="custom">Custom raw HTTP (JSON template)</option>
+          </select>
+        </label>
+        <label>
+          Response parser path
+          <input id="responsePath" type="text" placeholder="choices[0].message.content" />
+        </label>
+      </div>
+      <label>
+        Модель
+        <input id="model" type="text" list="recentModelsList" placeholder="например, claude-sonnet-4-20250514" />
+        <datalist id="recentModelsList"></datalist>
+      </label>
+      <div id="modelSuggestions" class="chips"></div>
+      <div id="legacyWarning" class="inline-warning hidden">
+        Эта модель считается устаревающей у DeepSeek. Она может работать, но
+        рекомендуется перейти на актуальную модель.
+      </div>
+      <div id="rawTemplateBlock" class="hidden">
+        <label>
+          JSON-шаблон тела запроса (Custom raw HTTP)
+          <textarea id="rawTemplate" rows="10" spellcheck="false"></textarea>
+        </label>
+        <p class="help">
+          Переменные: <code>{{model}}</code>, <code>{{system_prompt}}</code>,
+          <code>{{user_prompt}}</code>, <code>{{max_tokens}}</code>,
+          <code>{{temperature}}</code>, <code>{{language}}</code>,
+          <code>{{strictness}}</code>. Строковые переменные указывайте в
+          кавычках: <code>"{{user_prompt}}"</code> — значения экранируются
+          автоматически.
+        </p>
+      </div>
+    </section>
+
+    <!-- Авторизация -->
+    <section>
+      <h2>Авторизация</h2>
+      <div class="row">
+        <label>
+          Auth mode
+          <select id="authMode">
+            <option value="x-api-key">x-api-key: &lt;key&gt;</option>
+            <option value="bearer">Authorization: Bearer &lt;key&gt;</option>
+            <option value="custom">Свой заголовок</option>
+            <option value="none">Без авторизации (локальные API)</option>
+          </select>
+        </label>
+        <label id="customAuthHeaderLabel" class="hidden">
+          Имя заголовка
+          <input id="customAuthHeader" type="text" placeholder="x-custom-auth" />
+        </label>
+      </div>
+      <label>
+        API key
+        <input id="apiKey" type="password" autocomplete="off" placeholder="Вставьте новый ключ, чтобы заменить сохранённый" />
+      </label>
+      <div id="maskedKeyInfo" class="help"></div>
+      <div class="btn-row">
+        <button id="btnClearKey" type="button" class="danger-outline">Удалить ключ</button>
+      </div>
+      <label>
+        Дополнительные заголовки (JSON-объект)
+        <textarea id="extraHeaders" rows="4" spellcheck="false" placeholder='{&#10;  "anthropic-version": "2023-06-01"&#10;}'></textarea>
+      </label>
+      <label>
+        Дополнительные поля тела запроса (JSON-объект, advanced)
+        <textarea id="advancedBody" rows="3" spellcheck="false" placeholder='например: { "thinking": { "type": "disabled" } }'></textarea>
+      </label>
+      <p class="help">
+        Сюда можно добавить provider-specific параметры, например
+        reasoning/thinking-опции DeepSeek. Поля добавляются в тело запроса.
+      </p>
+    </section>
+
+    <!-- Генерация -->
+    <section>
+      <h2>Параметры генерации</h2>
+      <div class="row">
+        <label>Max tokens <input id="maxTokens" type="number" min="16" max="100000" step="1" /></label>
+        <label>Temperature <input id="temperature" type="number" min="0" max="2" step="0.1" /></label>
+        <label>Таймаут, сек <input id="timeoutSeconds" type="number" min="5" max="600" step="1" /></label>
+      </div>
+      <div class="row">
+        <label>Повторы при сбое <input id="maxRetries" type="number" min="0" max="5" step="1" /></label>
+        <label>Пауза между повторами, сек <input id="retryDelaySeconds" type="number" min="0" max="60" step="1" /></label>
+      </div>
+      <div class="row">
+        <label>
+          Язык ответа
+          <select id="language">
+            <option value="auto">Автоматически (язык текста)</option>
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+            <option value="custom">Другой…</option>
+          </select>
+        </label>
+        <label id="customLanguageLabel" class="hidden">
+          Язык (свой)
+          <input id="customLanguage" type="text" placeholder="например, Deutsch" />
+        </label>
+        <label>
+          Строгость фактчекинга
+          <select id="strictness">
+            <option value="lenient">Мягкая (lenient)</option>
+            <option value="balanced">Сбалансированная (balanced)</option>
+            <option value="strict">Строгая (strict)</option>
+          </select>
+        </label>
+      </div>
+      <label class="checkbox">
+        <input id="stream" type="checkbox" />
+        Streaming-ответы (настройка сохраняется, но в MVP не используется)
+      </label>
+    </section>
+
+    <!-- STT -->
+    <section>
+      <h2>Распознавание речи (STT) — для проверки звука видео</h2>
+      <p class="help">
+        Отдельный endpoint для превращения звука в текст
+        (Whisper-совместимый API, обычно <code>/v1/audio/transcriptions</code>).
+        Claude/DeepSeek звук не распознают — нужен STT-провайдер: OpenAI, Groq
+        (есть бесплатный лимит) или локальный Whisper-сервер.
+      </p>
+      <div id="sttPresets" class="chips"></div>
+      <div class="row">
+        <label>
+          STT base URL
+          <input id="sttBaseUrl" type="url" placeholder="https://api.groq.com/openai" />
+        </label>
+        <label>
+          STT path
+          <input id="sttApiPath" type="text" placeholder="/v1/audio/transcriptions" />
+        </label>
+      </div>
+      <div id="sttOriginPreview" class="origin-preview"></div>
+      <div class="row">
+        <label>
+          STT auth mode
+          <select id="sttAuthMode">
+            <option value="bearer">Authorization: Bearer &lt;key&gt;</option>
+            <option value="x-api-key">x-api-key: &lt;key&gt;</option>
+            <option value="custom">Свой заголовок</option>
+            <option value="none">Без авторизации (локальный сервер)</option>
+          </select>
+        </label>
+        <label id="sttCustomAuthHeaderLabel" class="hidden">
+          Имя заголовка
+          <input id="sttCustomAuthHeader" type="text" placeholder="x-custom-auth" />
+        </label>
+      </div>
+      <label>
+        STT API key
+        <input id="sttApiKey" type="password" autocomplete="off" placeholder="Вставьте новый ключ, чтобы заменить сохранённый" />
+      </label>
+      <div id="sttMaskedKeyInfo" class="help"></div>
+      <div class="row">
+        <label>STT модель <input id="sttModel" type="text" placeholder="whisper-1" /></label>
+        <label>Язык аудио (пусто = авто) <input id="sttLanguage" type="text" placeholder="ru" /></label>
+        <label>Длина куска, сек <input id="sttChunkSeconds" type="number" min="5" max="120" step="1" /></label>
+      </div>
+      <label>
+        STT response path
+        <input id="sttResponsePath" type="text" placeholder="text" />
+      </label>
+      <div class="btn-row">
+        <button id="btnTestStt" type="button">Test STT</button>
+        <button id="btnClearSttKey" type="button" class="danger-outline">Удалить STT ключ</button>
+      </div>
+      <div id="sttTestResult" class="status hidden"></div>
+    </section>
+
+    <!-- Промпты -->
+    <section>
+      <h2>Prompt templates</h2>
+      <details>
+        <summary>Редактировать шаблоны промптов</summary>
+        <label>Fact-checking (system) <textarea id="p_factCheck" rows="12" spellcheck="false"></textarea></label>
+        <label>Fact-checking (user, переменная {{text}}) <textarea id="p_factCheckUser" rows="5" spellcheck="false"></textarea></label>
+        <label>Claim extraction (этап 2) <textarea id="p_claimExtraction" rows="4" spellcheck="false"></textarea></label>
+        <label>Summarization (резерв) <textarea id="p_summarization" rows="3" spellcheck="false"></textarea></label>
+        <label>Source verification (резерв) <textarea id="p_sourceVerification" rows="4" spellcheck="false"></textarea></label>
+        <label>Russian output <textarea id="p_outputRu" rows="2" spellcheck="false"></textarea></label>
+        <label>English output <textarea id="p_outputEn" rows="2" spellcheck="false"></textarea></label>
+        <div class="btn-row">
+          <button id="btnResetPrompts" type="button">Reset to defaults</button>
+        </div>
+      </details>
+    </section>
+
+    <!-- Сохранение и проверка -->
+    <section class="sticky-actions">
+      <div class="btn-row">
+        <button id="btnSave" type="button" class="primary">Сохранить настройки</button>
+        <button id="btnTest" type="button">Test connection</button>
+      </div>
+      <div id="saveStatus" class="status hidden"></div>
+      <div id="testResult" class="status hidden"></div>
+    </section>
+
+    <!-- Данные -->
+    <section>
+      <h2>Данные</h2>
+      <div class="btn-row">
+        <button id="btnExport" type="button">Экспорт настроек (без API key)</button>
+        <label class="file-btn">
+          Импорт настроек
+          <input id="importFile" type="file" accept="application/json" />
+        </label>
+        <button id="btnClearData" type="button" class="danger-outline">Очистить все локальные данные</button>
+      </div>
+      <p class="help">
+        Экспортируемый файл никогда не содержит API key. При импорте ключ из
+        файла игнорируется — действующий ключ сохраняется.
+      </p>
+      <label class="checkbox">
+        <input id="historyEnabled" type="checkbox" />
+        Сохранять историю проверок локально (по умолчанию выключено; смотреть —
+        в боковой панели, Alt+Shift+S)
+      </label>
+      <div class="btn-row">
+        <button id="btnClearHistory" type="button" class="danger-outline">Очистить историю</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+{
+  "manifest_version": 3,
+  "name": "FactLens — проверка фактов через ваш AI API",
+  "short_name": "FactLens",
+  "version": "0.2.0",
+  "description": "Проверка фактических утверждений в выделенном или вставленном тексте через настраиваемый AI endpoint (Anthropic, OpenAI-compatible, DeepSeek и др.). Автоматический фактчекинг может ошибаться — не используйте результат как окончательный источник истины.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "factlens@example.com",
+      "strict_min_version": "128.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "FactLens",
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "48": "icons/icon-48.png"
+    }
+  },
+  "options_ui": {
+    "page": "src/options/options.html",
+    "open_in_tab": true
+  },
+  "sidebar_action": {
+    "default_title": "FactLens",
+    "default_panel": "src/sidebar/sidebar.html",
+    "default_icon": "icons/icon-48.png",
+    "open_at_install": false
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": { "default": "Alt+Shift+F" },
+      "description": "Открыть FactLens (popup)"
+    },
+    "_execute_sidebar_action": {
+      "suggested_key": { "default": "Alt+Shift+S" },
+      "description": "Открыть боковую панель FactLens"
+    },
+    "check-selection": {
+      "suggested_key": { "default": "Alt+Shift+X" },
+      "description": "Проверить выделенный текст"
+    }
+  },
+  "background": {
+    "scripts": ["src/background/background.js"],
+    "type": "module"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "contextMenus"
+  ],
+  "host_permissions": [],
+  "optional_host_permissions": [
+    "https://api.anthropic.com/*",
+    "https://api.openai.com/*",
+    "https://api.deepseek.com/*",
+    "https://api.artemox.com/*",
+    "https://openrouter.ai/*",
+    "https://*/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
+  ]
+}

@@ -1,0 +1,128 @@
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --fg: #1f2937;
+  --muted: #6b7280;
+  --border: #e2e8f0;
+  --accent: #2563eb;
+  --warn-bg: #fffbeb;
+  --warn-border: #f59e0b;
+  --warn-fg: #92400e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171a21;
+    --card: #1f2430;
+    --fg: #e5e7eb;
+    --muted: #9ca3af;
+    --border: #374151;
+    --warn-bg: #3a2f14;
+    --warn-border: #b45309;
+    --warn-fg: #fcd34d;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font: 14px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+.page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+}
+
+h1 { font-size: 22px; margin: 0 0 12px; }
+h2 {
+  font-size: 17px;
+  margin: 28px 0 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.warning {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  color: var(--warn-fg);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding: 10px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.toc a { color: var(--accent); text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  margin: 8px 0;
+}
+
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+th { background: var(--bg); font-size: 12px; }
+tr:last-child td { border-bottom: none; }
+
+code {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+ul, ol { padding-left: 22px; }
+li { margin: 4px 0; }
+
+.b {
+  display: inline-block;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 1px 8px;
+  white-space: nowrap;
+}
+
+.v-true { background: #16a34a; }
+.v-mostly { background: #65a30d; }
+.v-misleading { background: #d97706; }
+.v-false { background: #dc2626; }
+.v-unverifiable { background: #6b7280; }
+.v-opinion { background: #64748b; }
+
+.disclaimer {
+  margin-top: 30px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+}

@@ -1,0 +1,117 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --accent: #2563eb;
+  --v-true: #16a34a;
+  --v-mostly: #65a30d;
+  --v-misleading: #d97706;
+  --v-false: #dc2626;
+  --v-unverifiable: #6b7280;
+  --v-opinion: #64748b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1f2430;
+    --fg: #e5e7eb;
+    --muted: #9ca3af;
+    --border: #374151;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 10px;
+  font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.brand { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+
+.logo {
+  width: 13px; height: 13px; border-radius: 4px;
+  background: linear-gradient(135deg, var(--accent), #7c3aed);
+}
+
+.link-btn {
+  background: none; border: none; color: var(--accent);
+  cursor: pointer; font: inherit; padding: 2px 4px;
+}
+.link-btn:hover { text-decoration: underline; }
+
+.meta {
+  color: var(--muted); font-size: 12px; margin-bottom: 8px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+h2 { font-size: 13px; margin: 12px 0 6px; }
+
+.box { display: flex; flex-direction: column; gap: 6px; }
+
+.muted { color: var(--muted); font-size: 12px; margin: 2px 0; }
+
+.claim {
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+.claim summary {
+  cursor: pointer; display: flex; align-items: baseline;
+  gap: 6px; flex-wrap: wrap; list-style: none;
+}
+.claim summary::-webkit-details-marker { display: none; }
+.badge {
+  font-size: 10px; font-weight: 700; padding: 1px 6px;
+  border-radius: 999px; color: #fff; white-space: nowrap;
+}
+.conf { color: var(--muted); font-size: 10px; }
+.ctext { flex: 1 1 100%; margin-top: 2px; }
+.cbody {
+  margin-top: 6px; padding-top: 6px;
+  border-top: 1px dashed var(--border);
+  font-size: 12px;
+}
+.cbody p { margin: 3px 0; }
+.cbody a { color: var(--accent); word-break: break-all; }
+.lbl { color: var(--muted); }
+
+.v-TRUE { border-left-color: var(--v-true); }
+.v-TRUE .badge { background: var(--v-true); }
+.v-MOSTLY_TRUE { border-left-color: var(--v-mostly); }
+.v-MOSTLY_TRUE .badge { background: var(--v-mostly); }
+.v-MISLEADING { border-left-color: var(--v-misleading); }
+.v-MISLEADING .badge { background: var(--v-misleading); }
+.v-FALSE { border-left-color: var(--v-false); }
+.v-FALSE .badge { background: var(--v-false); }
+.v-UNVERIFIABLE { border-left-color: var(--v-unverifiable); }
+.v-UNVERIFIABLE .badge { background: var(--v-unverifiable); }
+.v-OPINION_NOT_CHECK_WORTHY { border-left-color: var(--v-opinion); }
+.v-OPINION_NOT_CHECK_WORTHY .badge { background: var(--v-opinion); }
+
+.hist-entry {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+.hist-entry summary { cursor: pointer; list-style: none; font-size: 12px; }
+.hist-entry summary::-webkit-details-marker { display: none; }
+.hist-claims { margin-top: 6px; display: flex; flex-direction: column; gap: 5px; }
+
+.disclaimer {
+  margin-top: 14px; padding-top: 8px;
+  border-top: 1px solid var(--border);
+  color: var(--muted); font-size: 11px;
+}
