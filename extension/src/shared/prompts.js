@@ -100,15 +100,18 @@ function languageInstruction(cfg) {
  */
 export function buildPrompts(cfg, text) {
   const prompts = cfg.prompts || DEFAULT_PROMPTS;
+  const langInstruction = languageInstruction(cfg);
   const system = fillTemplate(prompts.factCheck || DEFAULT_PROMPTS.factCheck, {
     strictness_instruction:
       STRICTNESS_INSTRUCTIONS[cfg.strictness] ||
       STRICTNESS_INSTRUCTIONS.balanced,
-    language_instruction: languageInstruction(cfg),
+    language_instruction: langInstruction,
   });
-  const user = fillTemplate(
-    prompts.factCheckUser || DEFAULT_PROMPTS.factCheckUser,
-    { text }
-  );
+  // Языковую инструкцию дублируем в конце user-сообщения: в середине
+  // длинного system-промпта слабые модели её иногда игнорируют.
+  const user =
+    fillTemplate(prompts.factCheckUser || DEFAULT_PROMPTS.factCheckUser, {
+      text,
+    }) + `\n\n${langInstruction}`;
   return { system, user };
 }
